@@ -71,8 +71,24 @@ def print_receipt(): #print the reciept
 
     print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*\n')
 
+def check_input(prodlist, number):
+  
+def get_items():
+    identifier = input('Please input a product identifer:')
+    check_input(products, identifier)
+
+    item_list=[]
+
+    while identifier != "DONE":
+        item_list.append(identifier)
+        identifier = input('Please input a product identifer:')
+        check_input(products, identifier)
+
+    print(item_list)    
+
 
 if __name__ == "__main__":
 
     clear()
     print_receipt()    
+    get_items()
