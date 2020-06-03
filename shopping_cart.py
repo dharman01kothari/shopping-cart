@@ -72,8 +72,16 @@ def print_receipt(): #print the reciept
     print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*\n')
 
 def check_input(prodlist, number):
+    id_list = list(prodlist.values())
+    
+    for i in prodlist:
+        if number not in id_list:
+            print("\nINVALID INPUT\n")
+            quit()
+        else:
+            continue
   
-def get_items():
+def get_items(products):
     identifier = input('Please input a product identifer:')
     check_input(products, identifier)
 
@@ -84,11 +92,13 @@ def get_items():
         identifier = input('Please input a product identifer:')
         check_input(products, identifier)
 
-    print(item_list)    
+    return item_list    
 
 
 if __name__ == "__main__":
 
     clear()
+    items = get_items(products)
+
     print_receipt()    
-    get_items()
+   
