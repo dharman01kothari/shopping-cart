@@ -54,20 +54,30 @@ def calc_total(subtotal, tax):
 
 def print_receipt(products, scan_items): #print the reciept
     
+    output_string =''
+
     print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
+    output_string += '\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n'
 
     print('                                 LEAN GREEN GROCERY MACHINE')
+    output_string +='                                 LEAN GREEN GROCERY MACHINE\n'
     print('                             WWW.LEAN-GREEN-GROCERY-MACHINE.COM')
+    output_string +='                             WWW.LEAN-GREEN-GROCERY-MACHINE.COM\n'
 
     print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
+    output_string +='\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n'
 
     print('                            CHECKOUT AT:',(datetime.datetime.now()))
+    output_string += '                            CHECKOUT AT:' + str(datetime.datetime.now())
+    output_string += '\n'
 
     print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
+    output_string += '\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n'
 
     subtotal = 0
     num = 0
     print('SELECTED PRODUCTS:\n')
+    output_string += 'SELECTED PRODUCTS:\n'
 
     for i in scan_items:
         num = num + 1
@@ -75,8 +85,11 @@ def print_receipt(products, scan_items): #print the reciept
         catalog_item = matched_ids[0]
         subtotal = subtotal + catalog_item['price']
         print(str(num)+'. '+catalog_item['name']+' '+'$'+str(catalog_item['price']))
+        output_string += str(num)+'. '+catalog_item['name']+' '+'$'+str(catalog_item['price'])
+        output_string += '\n'
 
     print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
+    output_string +='\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n'
 
     tax = calc_tax(subtotal)
     total = calc_total(subtotal, tax)
@@ -84,31 +97,57 @@ def print_receipt(products, scan_items): #print the reciept
     total = to_usd(total)
 
     print('SUBTOTAL:',to_usd(subtotal))
+    output_string += 'SUBTOTAL:' + to_usd(subtotal)
+    output_string += '\n'
     print('TAX:     ',tax)
+    output_string += 'TAX:     '+ tax
+    output_string += '\n'
     print('TOTAL:   ',total)
+    output_string +='TOTAL:   '+ total
+    output_string += '\n'
 
     print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
-
+    output_string += '\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n'
+    
     print('                                  THANKS, SEE YOU AGAIN SOON!')
-
+    output_string += '                                  THANKS, SEE YOU AGAIN SOON!\n'
+    
     print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
+    output_string += '\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n'
 
+    return output_string
 
-def get_items():
+def get_items(opt):
     identifier = input('Please input a product identifer or DONE to finish:')
+    
+    if str(identifier) not in opt:
+        clear()
+        print("You selected an item to check out that is not in the store - Are you trying to reverse shoplift??")
+        quit()
+
     item_list = []
 
     while identifier != "DONE":
         item_list.append(identifier)
         identifier = input('Please input a product identifer or DONE to finish:')
-       
-    return item_list    
+        if str(identifier) not in opt:
+            print("You selected an item to check out that is not in the store - Are you trying to reverse shoplift??")
+            quit()
 
+    return item_list    
 
 if __name__ == "__main__":
 
     clear()
-    items = get_items()
     
-    print_receipt(products, items)    
+    options = [str(i['id']) for i in products]
+    options.append('DONE')
+
+    items = get_items(options)
+
+    with open("E-Reciept.txt",'w') as file:
+        file.write(print_receipt(products,items))
+    
+    print('\nA new e-reciept was also created and stored in your current directory for you convienence! Enjoy!\n')
+
    
