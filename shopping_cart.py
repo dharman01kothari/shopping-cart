@@ -1,6 +1,7 @@
 # shopping_cart.py
 
 from os import system, name
+import datetime
 
 products = [
     {"id":1, "name": "Chocolate Sandwich Cookies", "department": "snacks", "aisle": "cookies cakes", "price": 3.50},
@@ -44,61 +45,70 @@ def to_usd(my_price):
 def clear(): # clear the screen
         _ = system('clear')
 
-def print_receipt(): #print the reciept
+
+def calc_tax(subtotal):
+    return (1.0875*subtotal)
+
+def calc_total(subtotal, tax):
+    return (subtotal+tax)
+
+def print_receipt(products, scan_items): #print the reciept
     
-    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*\n')
+    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
 
-    print('                      GREEN FOODS GROCERY')
-    print('                  WWW.GREEN-FOODS-GROCERY.COM')
+    print('                                 LEAN GREEN GROCERY MACHINE')
+    print('                             WWW.LEAN-GREEN-GROCERY-MACHINE.COM')
 
-    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*\n')
+    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
 
-    print('                   CHECKOUT AT: TIME/DATE')
+    print('                            CHECKOUT AT:',(datetime.datetime.now()))
 
-    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*\n')
+    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
 
-    print('SELECTED PRODUCTS:')
+    subtotal = 0
+    num = 0
+    print('SELECTED PRODUCTS:\n')
 
-    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*\n')
+    for i in scan_items:
+        num = num + 1
+        matched_ids = [p for p in products if str(p['id']) == str(i)]
+        catalog_item = matched_ids[0]
+        subtotal = subtotal + catalog_item['price']
+        print(str(num)+'. '+catalog_item['name']+' '+'$'+str(catalog_item['price']))
 
-    print('SUBTOTAL:')
-    print('TAX:')
-    print('TOTAL:')
+    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
 
-    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*\n')
+    tax = calc_tax(subtotal)
+    total = calc_total(subtotal, tax)
+    tax = to_usd(tax)
+    total = to_usd(total)
 
-    print('                   THANKS, SEE YOU AGAIN SOON!')
+    print('SUBTOTAL:',to_usd(subtotal))
+    print('TAX:     ',tax)
+    print('TOTAL:   ',total)
 
-    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*\n')
+    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
 
-def check_input(prodlist, number):
-    id_list = list(prodlist.values())
-    
-    for i in prodlist:
-        if number not in id_list:
-            print("\nINVALID INPUT\n")
-            quit()
-        else:
-            continue
-  
-def get_items(products):
-    identifier = input('Please input a product identifer:')
-    check_input(products, identifier)
+    print('                                  THANKS, SEE YOU AGAIN SOON!')
 
-    item_list=[]
+    print('\n*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**\n')
+
+
+def get_items():
+    identifier = input('Please input a product identifer or DONE to finish:')
+    item_list = []
 
     while identifier != "DONE":
         item_list.append(identifier)
-        identifier = input('Please input a product identifer:')
-        check_input(products, identifier)
-
+        identifier = input('Please input a product identifer or DONE to finish:')
+       
     return item_list    
 
 
 if __name__ == "__main__":
 
     clear()
-    items = get_items(products)
-
-    print_receipt()    
+    items = get_items()
+    
+    print_receipt(products, items)    
    
